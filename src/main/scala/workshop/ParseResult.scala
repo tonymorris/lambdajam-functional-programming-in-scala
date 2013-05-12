@@ -1,3 +1,5 @@
+package workshop
+
 sealed trait ParseResult[A] {
   def isFail: Boolean =
     this match {

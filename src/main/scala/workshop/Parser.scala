@@ -1,3 +1,5 @@
+package workshop
+
 import Parser._
 
 case class Parser[A](run: In => ParseResult[(In, A)]) {
@@ -25,7 +27,7 @@ case class Parser[A](run: In => ParseResult[(In, A)]) {
     Parser(i => run(i) match {
       case ParseFail(_) => p run i
       case ParseValue(a) => ParseValue(a)
-    })''
+    })
 } 
 
 object Parser {

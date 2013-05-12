@@ -47,6 +47,6 @@ case class ParseFail[A](m: String) extends ParseResult[A]
 case class ParseValue[A](v: A) extends ParseResult[A]
 
 object ParseResult {
-  def apply[A](a: A): ParseResult[A] =
+  def value[A](a: A): ParseResult[A] =
     ParseValue(a)
 }

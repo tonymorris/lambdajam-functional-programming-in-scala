@@ -4,9 +4,70 @@ object Tests {
   val tests: List[(String, Option[NotationAwesome], String)] =
     List(
       (
-        "true"
+        "sole true"
       , Some(AwesomeTrue)
       , "true"
+      )
+    , (
+        "list with single value"
+      , Some(TotallyAwesome(List(AwesomeFalse)))
+      , "[false]"
+      )
+    , (
+        "empty list"
+      , Some(TotallyAwesome(List()))
+      , "[]"
+      )
+    , (
+        "sole string"
+      , Some(AwesomeString("awesome"))
+      , "\"awesome\""
+      )
+    , (
+        "sole string containing brackets"
+      , Some(AwesomeString("awe[some]"))
+      , "\"awe[some]\""
+      )
+    , (
+        "list with several top-level values"
+      , Some(TotallyAwesome(List(AwesomeString("awesome"), AwesomeFalse, AwesomeTrue)))
+      , "[\"awesome\", false, true]"
+      )
+    , (
+        "list with embedded values"
+      , Some(TotallyAwesome(List(AwesomeString("awesome"), AwesomeFalse, TotallyAwesome(List(AwesomeTrue, AwesomeFalse, AwesomeString("more awesome"))))))
+      , "[\"awesome\", false, [ true, false, \"more awesome\"]]"
+      )
+    , (
+        "list with values interspersed with whitespace"
+      , Some(TotallyAwesome(List(AwesomeString("awesome"), AwesomeFalse, TotallyAwesome(List(AwesomeTrue, AwesomeFalse, AwesomeString("more awesome"))))))
+      , "  [  \"awesome\"  , false, [ true   , false, \"more awesome\"]  ]  "
+      )
+      // failures
+    , (
+        "arbitrary characters fail"
+      , None
+      , "awesome"
+      )
+    , (
+        "unbalanced quotes fail"
+      , None
+      , "\"awesome"
+      )
+    , (
+        "unbalanced left bracket fail"
+      , None
+      , "[ true"
+      )
+    , (
+        "unbalanced right bracket fail"
+      , None
+      , "],  "
+      )
+    , (
+        "misplaced comma fail"
+      , None
+      , ",  "
       )
     )
 }

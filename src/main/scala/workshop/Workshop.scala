@@ -3,15 +3,11 @@ package workshop
 object Workshop {
   import Parser._
 
-  val p =
-    for {
-      u <- upper
-      l <- lower.many
-    } yield u :: l
+  val s = "true"
+  val t = NotationAwesomeParser.awesomeP parse s
 
   def main(args: Array[String]) {
-    val r = p parse "Abc"
-    println(r)
+    println(t)
   }
 }
 

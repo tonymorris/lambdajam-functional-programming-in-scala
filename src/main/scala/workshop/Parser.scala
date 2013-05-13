@@ -44,6 +44,15 @@ case class Parser[A](run: In => ParseResult[(In, A)]) {
       t <- this.many
     } yield h :: t
 
+  def separation[B](p: Parser[B]): Parser[List[A]] = {
+    val s = for {
+              h <- this
+              t <- flatMap(_ => this).many
+            } yield h::t
+    s | Parser.value(Nil)
+  }
+
+
   def mapresult(r: ParseResult[(In, A)] => ParseResult[(In, A)]): Parser[A] =
     Parser(r compose run)
 
@@ -68,6 +77,9 @@ object Parser {
       case Nil => ParseFail("Unexpected end of stream")
       case h::t => ParseValue((t, h))
     }
+
+  def characters: Parser[List[Char]] =
+    character.many
 
   def satisfyoption(p: Char => Option[String]): Parser[Char] = 
     character flatMap (c => 
@@ -111,4 +123,11 @@ object Parser {
 
   def replicate[A](n: Int, p: Parser[A]): Parser[List[A]] =
     sequence(List.fill(n)(p))
+
+  def list(s: List[Char]): Parser[List[Char]] = 
+    sequence(s map is)
+
+  def string(s: String): Parser[String] =
+    list(s.toList) map (_.mkString)
+
 }

@@ -124,7 +124,8 @@ object ParseResult {
   This can be done by "sequencing"; look at the parse result on the list head,
   and sequence its value to the tail.
 
-  ~~~ Use flatMap, map. Use explicit recursion.
+  ~~~ Use flatMap and map with explicit recursion.
+  ~~~ Alternatively, use ap and map with explicit recursion.
   */
   def sequence[A](a: List[ParseResult[A]]): ParseResult[List[A]] =
     a match {

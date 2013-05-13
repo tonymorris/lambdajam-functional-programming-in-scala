@@ -3,8 +3,14 @@ package workshop
 object Workshop {
   import Parser._
 
+  val p =
+    for {
+      _ <- spaces
+      a <- string("true")
+    } yield a
+
   val s = "true"
-  val t = NotationAwesomeParser.awesomeP parse s
+  val t = p parse s
 
   def main(args: Array[String]) {
     println(t)
@@ -45,7 +51,7 @@ object NotationAwesomeParser {
   def awesomeP: Parser[NotationAwesome] =
     for {
       _ <- spaces
-      a <- totallyP | stringP | falseP | trueP
+      a <- trueP //  totallyP | stringP | falseP | trueP
       _ <- spaces
     } yield a
 }

@@ -3,8 +3,8 @@ package workshop
 import Parser._
 
 case class Parser[A](run: In => ParseResult[(In, A)]) {
-  def parse(i: In): ParseResult[A] =
-    run(i) map (_._2)
+  def parse(i: String): ParseResult[A] =
+    run(i.toList) map (_._2)
 
   def map[B](f: A => B): Parser[B] =
     Parser(run(_) map {
@@ -92,13 +92,13 @@ object Parser {
     space.many1
 
   def lower: Parser[Char] =
-    satisfyoption(c => if(c.isLower) None else Some("Unexpected character '" + c + "' Expecting lowercase"))
+    satisfyoption(c => if(c.isLower) None else Some("Unexpected character '" + c + "'. Expecting lowercase"))
 
   def upper: Parser[Char] =
-    satisfyoption(c => if(c.isLower) None else Some("Unexpected character '" + c + "' Expecting uppercase"))
+    satisfyoption(c => if(c.isUpper) None else Some("Unexpected character '" + c + "'. Expecting uppercase"))
 
   def letter: Parser[Char] =
-    satisfyoption(c => if(c.isLetter) None else Some("Unexpected character '" + c + "' Expecting letter"))
+    satisfyoption(c => if(c.isLetter) None else Some("Unexpected character '" + c + "'. Expecting letter"))
 
   def sequence[A](ps: List[Parser[A]]): Parser[List[A]] =
     ps match {

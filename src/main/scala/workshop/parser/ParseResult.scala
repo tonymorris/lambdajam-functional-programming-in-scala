@@ -98,23 +98,24 @@ sealed trait ParseResult[A] {
   /*
   Exercise 8
   ----------
-  If this is a fail, modify the message with the given function.
-  Otherwise, leave unchanged.
+  Return if all values of type A satisfy the predicate.
   */
-  def withfail(e: String => String): ParseResult[A] =
+  def forall(p: A => Boolean): Boolean =
     this match {
-      case ParseFail(m) => ParseFail(e(m))
-      case ParseValue(r) => ParseValue(r)
+      case ParseFail(_) => true
+      case ParseValue(r) => p(r)
     }
 
   /*
   Exercise 9
   ----------
-  If this is a fail, set the message to the given parameter.
-  Otherwise, leave unchanged.
+  Return if any values of type A satisfy the predicate.
   */
-  def fail(e: => String): ParseResult[A] =
-    withfail(_ => e)
+  def exists(p: A => Boolean): Boolean =
+    this match {
+      case ParseFail(_) => false
+      case ParseValue(r) => p(r)
+    }
 
 }
 

@@ -221,13 +221,6 @@ object Parser {
   def replicate[A](n: Int, p: Parser[A]): Parser[List[A]] =
     sequence(List.fill(n)(p))
 
-  /*
-  Exercise 26
-  -----------
-  Return a parser that consumes characters of the given list.
-
-  ~~~ Use sequence and is
-  */
   def list(s: List[Char]): Parser[List[Char]] = 
     sequence(s map is)
 

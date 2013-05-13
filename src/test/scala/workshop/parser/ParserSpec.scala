@@ -1,7 +1,7 @@
 package workshop
 package parser
 
-object WorkshopSpec extends Spec {
+object ParserSpec extends Spec {
   import NotationAwesome._
   "parser" should {
     "sole true" in {

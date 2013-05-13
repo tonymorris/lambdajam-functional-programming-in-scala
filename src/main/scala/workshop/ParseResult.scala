@@ -42,6 +42,16 @@ sealed trait ParseResult[A] {
 
   def |(a: => A): A =
     value getOrElse a
+
+  def withfail(e: String => String): ParseResult[A] =
+    this match {
+      case ParseFail(m) => ParseFail(e(m))
+      case ParseValue(r) => ParseValue(r)
+    }
+
+  def fail(e: => String): ParseResult[A] =
+    withfail(_ => e)
+
 }
 case class ParseFail[A](m: String) extends ParseResult[A]
 case class ParseValue[A](v: A) extends ParseResult[A]

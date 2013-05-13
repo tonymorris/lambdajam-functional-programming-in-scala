@@ -47,7 +47,7 @@ case class Parser[A](run: In => ParseResult[(In, A)]) {
   def separation[B](p: Parser[B]): Parser[List[A]] = {
     val s = for {
               h <- this
-              t <- flatMap(_ => this).many
+              t <- p.flatMap(_ => this).many
             } yield h::t
     s | Parser.value(Nil)
   }
@@ -81,21 +81,21 @@ object Parser {
   def characters: Parser[List[Char]] =
     character.many
 
-  def satisfyoption(p: Char => Option[String]): Parser[Char] = 
+  def satisfy(p: Char => Option[String]): Parser[Char] = 
     character flatMap (c => 
       p(c) match {
         case None => value(c)
         case Some(m) => fail(m)
       })
 
-  def satisfy(p: Char => Boolean): Parser[Char] =
-    satisfyoption(c => if(p(c)) None else Some("Unexpected character '" + c + "'"))
+  def satisfyPred(p: Char => Boolean): Parser[Char] =
+    satisfy(c => if(p(c)) None else Some("Unexpected character '" + c + "'"))
 
   def is(x: Char): Parser[Char] =
-    satisfyoption(c => if(c == x) None else Some("Unexpected character '" + c + "' Expecting '" + x + "'"))
+    satisfy(c => if(c == x) None else Some("Unexpected character '" + c + "'. Expecting '" + x + "'"))
 
   def space: Parser[Char] =
-    satisfyoption(c => if(c.isWhitespace) None else Some("Unexpected character '" + c + "' Expecting whitespace"))
+    satisfy(c => if(c.isWhitespace) None else Some("Unexpected character '" + c + "'. Expecting whitespace"))
 
   def spaces: Parser[List[Char]] =
     space.many
@@ -104,13 +104,13 @@ object Parser {
     space.many1
 
   def lower: Parser[Char] =
-    satisfyoption(c => if(c.isLower) None else Some("Unexpected character '" + c + "'. Expecting lowercase"))
+    satisfy(c => if(c.isLower) None else Some("Unexpected character '" + c + "'. Expecting lowercase"))
 
   def upper: Parser[Char] =
-    satisfyoption(c => if(c.isUpper) None else Some("Unexpected character '" + c + "'. Expecting uppercase"))
+    satisfy(c => if(c.isUpper) None else Some("Unexpected character '" + c + "'. Expecting uppercase"))
 
   def letter: Parser[Char] =
-    satisfyoption(c => if(c.isLetter) None else Some("Unexpected character '" + c + "'. Expecting letter"))
+    satisfy(c => if(c.isLetter) None else Some("Unexpected character '" + c + "'. Expecting letter"))
 
   def sequence[A](ps: List[Parser[A]]): Parser[List[A]] =
     ps match {

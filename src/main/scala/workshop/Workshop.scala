@@ -1,13 +1,38 @@
 package workshop
 
-object Workshop {
-  import Parser._
+object Tests {
+  val tests: List[(String, Option[NotationAwesome], String)] =
+    List(
+      (
+        "true"
+      , Some(AwesomeTrue)
+      , "true"
+      )
+    )
+}
 
-  val s = "  true"
-  val t = NotationAwesomeParser.awesomeP parse s
+object Workshop {
+  import NotationAwesomeParser.awesomeP
+  import Tests.tests
+
+  val q = tests map {
+    case (name, result, in) => {
+      val r = awesomeP parse in
+      result match {
+        case None => r match {
+          case ParseFail(_) => "✔ " + name
+          case ParseValue(v) => "✖ " + name + " > Expected parser failure, but succeeded with " + v
+        }
+        case Some(w) => r match {
+          case ParseFail(_) => "✖ " + name + " > Expected parser to succeed with " + w + ", but failed"
+          case ParseValue(v) => if(w == v) "✔ " + name else "✖ " + name + " Expected parser to succeed with " + w + ", but succeeded with " + v
+        }
+      }
+    }
+  }
 
   def main(args: Array[String]) {
-    println(t)
+    q foreach println
   }
 }
 
@@ -29,7 +54,7 @@ object NotationAwesomeParser {
   def stringP: Parser[NotationAwesome] =
     for {
       _ <- is('"')
-      c <- characters
+      c <- satisfyPred(_ != '"').many
       _ <- is('"')
     } yield AwesomeString(c.mkString)
 
@@ -48,8 +73,4 @@ object NotationAwesomeParser {
       a <- totallyP | stringP | falseP | trueP
       _ <- spaces
     } yield a
-}
-
-object Data {
-
 }

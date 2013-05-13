@@ -57,6 +57,13 @@ case class ParseFail[A](m: String) extends ParseResult[A]
 case class ParseValue[A](v: A) extends ParseResult[A]
 
 object ParseResult {
-  def value[A](a: A): ParseResult[A] =
-    ParseValue(a)
+  def sequence[A](a: List[ParseResult[A]]): ParseResult[List[A]] =
+    a match {
+      case Nil => ParseValue(Nil)
+      case h::t => for {
+                     q <- h
+                     r <- sequence(t)
+                   } yield q :: r
+    }
+
 }

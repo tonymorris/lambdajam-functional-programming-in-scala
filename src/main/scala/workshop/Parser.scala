@@ -56,18 +56,13 @@ case class Parser[A](run: In => ParseResult[(In, A)]) {
   def mapresult(r: ParseResult[(In, A)] => ParseResult[(In, A)]): Parser[A] =
     Parser(r compose run)
 
-  def withfail(e: String => String): Parser[A] = 
-    mapresult(_ withfail e)
-
-  def setfail(e: => String): Parser[A] =
-    withfail(_ => e)
 } 
 
 object Parser {
   type In = List[Char]
 
   def value[A](a: => A): Parser[A] =
-    Parser(i => ParseResult.value(i, a))
+    Parser(i => ParseValue(i, a))
 
   def fail[A](m: => String): Parser[A] =  
     Parser(_ => ParseFail(m))
@@ -112,8 +107,8 @@ object Parser {
   def letter: Parser[Char] =
     satisfy(c => if(c.isLetter) None else Some("Unexpected character '" + c + "'. Expecting letter"))
 
-  def sequence[A](ps: List[Parser[A]]): Parser[List[A]] =
-    ps match {
+  def sequence[A](a: List[Parser[A]]): Parser[List[A]] =
+    a match {
       case Nil => value(Nil)
       case h::t => for {
                      q <- h

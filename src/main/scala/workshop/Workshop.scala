@@ -51,7 +51,7 @@ object NotationAwesomeParser {
   def awesomeP: Parser[NotationAwesome] =
     for {
       _ <- spaces
-      a <- trueP //  totallyP | stringP | falseP | trueP
+      a <- totallyP | stringP | falseP | trueP
       _ <- spaces
     } yield a
 }

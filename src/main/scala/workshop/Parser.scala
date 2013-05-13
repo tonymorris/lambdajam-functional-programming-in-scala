@@ -34,7 +34,7 @@ case class Parser[A](run: In => ParseResult[(In, A)]) {
 
   def many: Parser[List[A]] =
     Parser(i => run(i) match {
-      case ParseFail(_) => ParseValue((Nil, Nil))
+      case ParseFail(_) => ParseValue((i, Nil))
       case ParseValue((j, a)) => many map (a :: _) run j
     })
 

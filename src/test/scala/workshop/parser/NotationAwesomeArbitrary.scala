@@ -21,12 +21,12 @@ object NotationAwesomeArbitrary {
 
   /*
   at workshop.parser.NotationAwesomeArbitrary$$anonfun$totally$1$1.apply(NotationAwesomeArbitrary.scala:15)
-	at workshop.parser.NotationAwesomeArbitrary$$anonfun$totally$1$1.apply(NotationAwesomeArbitrary.scala:15)
-	at org.scalacheck.Gen$.listOf(Gen.scala:340)
-	at workshop.parser.NotationAwesomeArbitrary$.totally$1(NotationAwesomeArbitrary.scala:15)
-	at workshop.parser.NotationAwesomeArbitrary$.workshop$parser$NotationAwesomeArbitrary$$awesome$1(NotationAwesomeArbitrary.scala:17)
-	at workshop.parser.NotationAwesomeArbitrary$$anonfun$totally$1$1.apply(NotationAwesomeArbitrary.scala:15)
-	at workshop.parser.NotationAwesomeArbitrary$$anonfun$totally$1$1.apply(NotationAwesomeArbitrary.scala:15)
-	at org.scalacheck.Gen$.listOf(Gen.scala:340)
+  at workshop.parser.NotationAwesomeArbitrary$$anonfun$totally$1$1.apply(NotationAwesomeArbitrary.scala:15)
+  at org.scalacheck.Gen$.listOf(Gen.scala:340)
+  at workshop.parser.NotationAwesomeArbitrary$.totally$1(NotationAwesomeArbitrary.scala:15)
+  at workshop.parser.NotationAwesomeArbitrary$.workshop$parser$NotationAwesomeArbitrary$$awesome$1(NotationAwesomeArbitrary.scala:17)
+  at workshop.parser.NotationAwesomeArbitrary$$anonfun$totally$1$1.apply(NotationAwesomeArbitrary.scala:15)
+  at workshop.parser.NotationAwesomeArbitrary$$anonfun$totally$1$1.apply(NotationAwesomeArbitrary.scala:15)
+  at org.scalacheck.Gen$.listOf(Gen.scala:340)
   */
 }
